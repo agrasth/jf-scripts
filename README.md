@@ -1,6 +1,6 @@
 # JFrog CLI Automation Scripts
 
-This directory contains automation scripts for maintaining JFrog CLI components.
+This repository contains automation scripts for maintaining JFrog CLI components.
 
 ## Scripts
 
@@ -10,7 +10,8 @@ Automatically updates all JFrog repository versions in `jfrog-cli-artifactory/go
 
 **Usage:**
 ```bash
-cd automation-scripts
+git clone https://github.com/your-username/jf-scripts.git
+cd jf-scripts
 go run update_jfrog_versions.go
 ```
 
@@ -23,7 +24,7 @@ go run update_jfrog_versions.go
 - ✅ Proper error handling and user feedback
 
 **Requirements:**
-- Run from the root directory containing `jfrog-cli-artifactory`
+- `jfrog-cli-artifactory` directory must be in a sibling directory
 - Optional: Set `GITHUB_TOKEN` environment variable to avoid rate limits
 
 **Repositories Updated:**
@@ -31,4 +32,16 @@ go run update_jfrog_versions.go
 - `github.com/jfrog/froggit-go`
 - `github.com/jfrog/gofrog`
 - `github.com/jfrog/jfrog-cli-core/v2`
-- `github.com/jfrog/jfrog-client-go` 
+- `github.com/jfrog/jfrog-client-go`
+
+## Directory Structure
+
+```
+workspace/
+├── jf-scripts/                  (this repository)
+│   ├── update_jfrog_versions.go
+│   └── README.md
+└── forked/                      (or any parent directory)
+    └── jfrog-cli-artifactory/   (target directory)
+        └── go.mod               (file to update)
+``` 
