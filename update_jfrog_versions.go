@@ -34,15 +34,22 @@ func main() {
 	}
 
 	// Path to jfrog-cli-artifactory go.mod
-	// Check if we're in automation-scripts directory
+	// Check current directory and adjust paths accordingly
 	var goModPath, jfrogCliArtifactoryDir string
-	if filepath.Base(currentDir) == "automation-scripts" {
+
+	baseName := filepath.Base(currentDir)
+	if baseName == "automation-scripts" {
 		// We're in automation-scripts, look in parent directory
 		parentDir := filepath.Dir(currentDir)
 		goModPath = filepath.Join(parentDir, "jfrog-cli-artifactory", "go.mod")
 		jfrogCliArtifactoryDir = filepath.Join(parentDir, "jfrog-cli-artifactory")
+	} else if baseName == "jf-scripts" {
+		// We're in jf-scripts repository, look for jfrog-cli-artifactory in sibling directory
+		parentDir := filepath.Dir(currentDir)
+		goModPath = filepath.Join(parentDir, "jfrog-cli-artifactory", "go.mod")
+		jfrogCliArtifactoryDir = filepath.Join(parentDir, "jfrog-cli-artifactory")
 	} else {
-		// We're in root directory
+		// We're in root directory (forked)
 		goModPath = filepath.Join(currentDir, "jfrog-cli-artifactory", "go.mod")
 		jfrogCliArtifactoryDir = filepath.Join(currentDir, "jfrog-cli-artifactory")
 	}
@@ -51,8 +58,9 @@ func main() {
 	if _, err := os.Stat(jfrogCliArtifactoryDir); os.IsNotExist(err) {
 		fmt.Printf("❌ jfrog-cli-artifactory directory not found at: %s\n", jfrogCliArtifactoryDir)
 		fmt.Println("💡 Make sure to run this script from:")
-		fmt.Println("   - The root directory containing jfrog-cli-artifactory")
+		fmt.Println("   - The forked directory containing jfrog-cli-artifactory")
 		fmt.Println("   - OR from the automation-scripts directory")
+		fmt.Println("   - OR from the jf-scripts repository")
 		os.Exit(1)
 	}
 
